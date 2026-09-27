@@ -1,0 +1,8 @@
+build/
+dist/
+__pycache__/
+*.spec
+output/maps/*.png
+output/csv/*.csv
+*.pt
+.DS_Store

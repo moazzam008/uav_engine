@@ -1,0 +1,7 @@
+opencv-python-headless
+numpy
+customtkinter
+pyinstaller
+ultralytics
+pandas
+huggingface_hub
