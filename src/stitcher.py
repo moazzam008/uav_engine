@@ -91,6 +91,14 @@ class UAVStitcher:
         H, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
         if H is None: return base_img
 
+        # --- HOMOGRAPHY SAFETY CHECK (Hyper-Drive Prevention) ---
+        # The determinant of the top-left 2x2 matrix measures the scale and skew.
+        # If it is extremely small or large, it means RANSAC failed and the math collapsed.
+        det = H[0, 0] * H[1, 1] - H[0, 1] * H[1, 0]
+        if det < 0.1 or det > 10.0:
+            logger.warning(f"Homography collapse detected (Determinant: {det:.2f}). Dropping corrupted frame.")
+            return base_img
+
         h1, w1 = curr_img.shape[:2]
         h2, w2 = base_img.shape[:2]
 
